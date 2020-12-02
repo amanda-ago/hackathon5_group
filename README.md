@@ -14,3 +14,5 @@
 *disagree/ sometimes:2
 *strongly disagree/ rarely:1
 
+
+
