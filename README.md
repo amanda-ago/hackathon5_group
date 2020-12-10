@@ -1,14 +1,14 @@
 # Hackathon 5
 
 ## Group members: 
-#### Amanda Oliveira
-#### Dan Lei 
-#### Daisy Zhou
-#### Yen-Ling Cheng
-#### Aniket Shah
-#### Junhao Zhang
-#### Xinyuan Ren
-#### Qianhui Yuan
+* Amanda Oliveira
+* Dan Lei 
+* Daisy Zhou
+* Yen-Ling Cheng
+* Aniket Shah
+* Junhao Zhang
+* Xinyuan Ren
+* Qianhui Yuan
 
 ## Activity (12/01/2020): 
 * Jump for 30 seconds. Hold cellphone vertically. Record Gyroscope activity using Sensor Kinetics Pro (or similar software).
