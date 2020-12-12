@@ -13,7 +13,6 @@
 ## Activity (12/01/2020): 
 * Jump for 30 seconds. Hold cellphone vertically. Record Gyroscope activity using Sensor Kinetics Pro (or similar software).
 * Data reported: MAX(X, Y, Z); #vertical jumps within 30 seconds.
-* Data URL: https://docs.google.com/spreadsheets/d/1zOMNivYlAbcqJwULQNgsopm1MLjVaRi1abD-WhaqUZI/edit?usp=sharing
 
 ## Questions: 
 * Q1	I consider myself a great jumper

@@ -19,6 +19,37 @@ output: html_document
 * Using K-means, can you identify the novices from the experts using only the app data?
 * Visualize your results using ggplot2
 
+```{r}
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+DF <- read.csv("jump_datagroup.csv")
+DF1 <- select(DF, 4:6)
+DF2 <- data.frame(scale(DF1))
+
+fit <- kmeans(DF2, 2)
+DF3 <- data.frame(DF2, fit$cluster)
+DF3$cluster <- as.factor(fit$cluster)
+DF3 <- DF3 %>% select(-fit.cluster)
+DF3$jumps <- DF$jumps
+
+DF4 <- DF3 %>% group_by(cluster) %>% summarise(avgX = mean(X_value), avgY = mean(Y_value), avgZ = mean(Z_value), avgJ=mean(jumps))
+
+ggplot(DF4, aes(avgX, avgJ, colour = cluster)) + geom_point() + xlab("mean(max(X))") + ylab("mean(Jumps)")
+ggplot(DF4, aes(avgY, avgJ, colour = cluster)) + geom_point() + xlab("mean(max(Y))") + ylab("mean(Jumps)")
+ggplot(DF4, aes(avgZ, avgJ, colour = cluster)) + geom_point() + xlab("mean(max(Z))") + ylab("mean(Jumps)")
+
+
+#cluster1 counted more jumps. the difference is minimal though. 
+
+
+
+
+```
+
+
 ## Task III
 * Devise five questions on a five point Likert scale that ask members of your group about their experience with your chosen task
 * Collect data from all members of your group
@@ -26,10 +57,54 @@ output: html_document
 * What does PC1 represent in your analysis?
 * Visualize the PC1 results for each member of your group
 
+
+```{r}
+
+DFF <- select(DF, -c(1:6))
+
+pca <- prcomp(DFF, scale. = TRUE)
+summary(pca)
+
+plot(pca, type = "lines") 
+pca$rotation 
+pca$x
+
+# Inspect loadings 
+DFF2 <- as.data.frame(pca$rotation)
+
+    # PC1: -Q1, -Q4, -Q5, +Q3. It is hard to predict. >PC1, >Jumps?
+    # Q1	I consider myself a great jumper
+    # Q2	How often do you exercise?
+    # Q3	Did you feel tired after jumping for 30 seconds?
+    # Q4	Do you have any health condition that makes jumping difficult?
+    # Q5	I consider exercising a joyful activity
+
+
+#PLOT
+jumpPC <- as.data.frame(pca$x)
+jumpPC$jump <- DF$jumps
+ggplot(jumpPC, aes(PC1, jump)) + geom_point() + xlab("PC1") + ylab("#Jumps in 30''") + geom_smooth(method='lm',formula=y~x)
+
+
+
+
+```
+
+
 ## Task IV
 * If you could only choose one thing to predict the score for each member of your group (raw data variable, a cluster or a PC) what would it be and why?
 * Create a visualization that supports your conclusion
-* Based on your conclusion devise an intervention that would help novice members of your group imporve their performance
+* Based on your conclusion devise an intervention that would help novice members of your group improve their performance
+
+```{r}
+# Graph #jumps/PC1 by cluster
+jumpPC$cluster <- as.factor(DF3$cluster)
+
+ggplot(jumpPC, aes(PC1, jump, color=cluster)) + geom_point() + xlab("PC1") + ylab("#Jumps in 30''") + geom_smooth(method='lm',formula=y~x)
+
+```
+
+
 
 ## Task V
 * Submit a link to your Github repo containing your data, code, visualizations and conclusions to charles.lang@tc.columbia.edu by 5pm EDT 12/14/20.
