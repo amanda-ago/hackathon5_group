@@ -38,6 +38,7 @@ DF1 <- select(DF, 4:6)
 DF2 <- data.frame(scale(DF1)) #scale data to be used in K-means
 
 # K-means data frame
+set.seed(7)
 fit <- kmeans(DF2, 2) # 2 clusters: experts/novices
 DF3 <- data.frame(DF2, fit$cluster)
 DF3$cluster <- as.factor(fit$cluster)
@@ -47,14 +48,14 @@ DF3$id <- DF$ID
 DF3$names <- DF$id
 
 # Graph 1: See mean(#jumps) by cluster 
-# Cluster 1 (Dan, Daisy, Yen-Ling and Qianhui) jumped more on average than Cluster 2 (Amanda, Aniket, Junhao, Xinyuan)
-# It is a strong conclusion (for the weak data we have), but Cluster 1 is for Experts and 2 for Novices
+# Cluster 2 (Dan, Daisy, Yen-Ling and Qianhui) jumped more on average than Cluster 1 (Amanda, Aniket, Junhao, Xinyuan)
+# It is a strong conclusion (for the weak data we have), but Cluster 2 is for Experts and 1 for Novices
 # The graphs below are generated for all X-Y-Z dimensions because it is had to know if participants held their cellphones in a consistent manner
 DF4 <- DF3 %>% group_by(cluster) %>% summarise(avgX = mean(X_value), avgY = mean(Y_value), avgZ = mean(Z_value), avgJ=mean(jumps))
 
 ggplot(DF4, aes(avgX, avgJ, colour = cluster)) + geom_point() + xlab("mean(max(X))") + ylab("mean(Jumps)") + ggtitle("Mean Jumps by Mean max(X), by cluster")
 ggplot(DF4, aes(avgY, avgJ, colour = cluster)) + geom_point() + xlab("mean(max(Y))") + ylab("mean(Jumps)") + ggtitle("Mean Jumps by Mean max(Y), by cluster")
-ggplot(DF4, aes(avgZ, avgJ, colour = cluster)) + geom_point() + xlab("mean(max(Z))") + ylab("mean(Jumps)") + ggtitle("Mean Jumps by Mean max(Y), by cluster")
+ggplot(DF4, aes(avgZ, avgJ, colour = cluster)) + geom_point() + xlab("mean(max(Z))") + ylab("mean(Jumps)") + ggtitle("Mean Jumps by Mean max(Z), by cluster")
 
 
 # Graph 2: Don't average across clusters. See all data points in graph : Stick to X dimension this time 
@@ -73,8 +74,9 @@ ggplot(DF3, aes(X_value, jumps, colour = cluster, label=id)) + geom_point() + xl
 
 ```{r}
 
-DFF <- select(DF, -c(1:6))
+DFF <- select(DF, -c(1:6, 12))
 
+set.seed(7)
 pca <- prcomp(DFF, scale. = TRUE)
 summary(pca)
 
