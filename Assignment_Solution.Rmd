@@ -94,6 +94,9 @@ DFF2 <- as.data.frame(pca$rotation)
     # Q4	Do you have any health condition that makes jumping difficult?
     # Q5	I consider exercising a joyful activity
 
+#What does PC1 represent in our analysis
+#We think that PC1 stands for physical fitness and member's interest in jumping because PC1 has a strong negative loading for Q5 and  positive loadings for Q3. These questions are more about the opinions and physical state of the group members. And Q3 is about members' energy after the jumping while Q5 is more related to the interest. If one has higher scores in Q5, he/she might get lower scores for PC1
+
 #PLOT
 jumpPC <- as.data.frame(pca$x)
 jumpPC$jump <- DF$jumps
@@ -111,13 +114,27 @@ ggplot(jumpPC, aes(PC1, jump, label=id)) + geom_point() + xlab("PC1") + ylab("#J
 * Based on your conclusion devise an intervention that would help novice members of your group improve their performance
 
 ```{r}
+#If you could only choose one thing to predict the score for each member of your group (raw data variable, a cluster or a PC) what would it be and why?
+
+#We think PC might be more helpful in predicting the score for each member. PCA can help us to get rid of irrelevant variables, so the visualization from PC is more accurate. Pc1 and PC2 provides over 30% contribution so we visualize the data of PC1 and PC 2 to see the results. According to the visualization we present below, If the loading of PC1 is higher, the member will jump higher. 
+
 # Graph #jumps/PC1 by cluster
+
 jumpPC$cluster <- as.factor(DF3$cluster)
 
-ggplot(jumpPC, aes(PC1, jump, color=cluster, label=id)) + geom_point() + xlab("PC1") + ylab("#Jumps in 30''") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) + ggtitle("#Jumps by PC1 by cluster")
+jumpPC$HIGH <- DF2$X_value
+ggplot(jumpPC, aes(PC2, HIGH, color=cluster, label=id)) + geom_point() + xlab("PC2") + ylab("#Jumps in 30''") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) + ggtitle("#Jumps by PC2 by cluster")
 
-# What's better? (cluster, PC, raw data):
-# Devise intervention: 
+jumpPC$HIGH <- DF2$X_value
+ggplot(jumpPC, aes(PC1, HIGH, color=cluster, label=id)) + geom_point() + xlab("PC1") + ylab("#Jumps in 30''") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) + ggtitle("#Jumps by PC1 by cluster")
+
+#ggplot(jumpPC, aes(PC2, jump, color=cluster, label=id)) + geom_point() + xlab("PC2") + ylab("#Jumps in 30''") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) + ggtitle("#Jumps by PC2 by cluster")
+
+
+# Devise intervention:
+
+#According to the analysis, we think we can devise an intervention which is providing more opportunities for novice to improve their physical fitness, increase the frequency of exercising and thus to intrigue their interests in jumping.
+
 
 ```
 
