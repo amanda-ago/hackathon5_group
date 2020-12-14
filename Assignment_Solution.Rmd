@@ -9,11 +9,11 @@ output: html_document
 ## Task I
 * You will be working in groups on a quantified student project
 * Download the Sensor Kinetics Pro app to your iOS or Android device (or similar gyroscope measuring app)
-* Split into subgroups with each subgroup investigating one measures available in the app
+* Split into subgroups with each subgroup investigating one measure available in the app
 * Each subgroup should report back after 20min with what they have learned
 
 ## Task II
-* In consultation with your group select a physical activity that: a) can be measured using the app, b) has a concrete, sontinuous, countable outcome and c) some members of the group are experts and some are novices at - If you are looking for inspiration you can find previous student projects below.
+* In consultation with your group select a physical activity that: a) can be measured using the app, b) has a concrete, continuous, countable outcome and c) some members of the group are experts and some are novices at - If you are looking for inspiration you can find previous student projects below.
 * Collect measurements for all members of the group performing the task using the app
 * Create a Github repo where you can store and share your data
 * Using K-means, can you identify the novices from the experts using only the app data?
@@ -50,16 +50,15 @@ DF3$names <- DF$id
 # Graph 1: See mean(#jumps) by cluster 
 # Cluster 2 (Dan, Daisy, Yen-Ling and Qianhui) jumped more on average than Cluster 1 (Amanda, Aniket, Junhao, Xinyuan)
 # It is a strong conclusion (for the weak data we have), but Cluster 2 is for Experts and 1 for Novices
-# The graphs below are generated for all X-Y-Z dimensions because it is had to know if participants held their cellphones in a consistent manner
+# The graphs below are generated for all X-Y-Z dimensions because it is hard to know if participants held their cellphones in a consistent manner
 DF4 <- DF3 %>% group_by(cluster) %>% summarise(avgX = mean(X_value), avgY = mean(Y_value), avgZ = mean(Z_value), avgJ=mean(jumps))
 
 ggplot(DF4, aes(avgX, avgJ, colour = cluster)) + geom_point() + xlab("mean(max(X))") + ylab("mean(Jumps)") + ggtitle("Mean Jumps by Mean max(X), by cluster")
 ggplot(DF4, aes(avgY, avgJ, colour = cluster)) + geom_point() + xlab("mean(max(Y))") + ylab("mean(Jumps)") + ggtitle("Mean Jumps by Mean max(Y), by cluster")
 ggplot(DF4, aes(avgZ, avgJ, colour = cluster)) + geom_point() + xlab("mean(max(Z))") + ylab("mean(Jumps)") + ggtitle("Mean Jumps by Mean max(Z), by cluster")
 
-
 # Graph 2: Don't average across clusters. See all data points in graph : Stick to X dimension this time 
-ggplot(DF3, aes(X_value, jumps, colour = cluster, label=id)) + geom_point() + xlab("(max(X)") + ylab("#Jumps") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) +  ggtitle("#Jumps by max(X), by cluster") + theme_minimal() 
+ggplot(DF3, aes(X_value, jumps, colour = cluster, label=id)) + geom_point() + xlab("max(X)") + ylab("#Jumps") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) +  ggtitle("#Jumps by max(X), by cluster") + theme_minimal() 
 
 ```
 
@@ -95,7 +94,7 @@ DFF2 <- as.data.frame(pca$rotation)
     # Q5	I consider exercising a joyful activity
 
 #What does PC1 represent in our analysis
-#We think that PC1 stands for physical fitness and member's interest in jumping because PC1 has a strong negative loading for Q5 and  positive loadings for Q3. These questions are more about the opinions and physical state of the group members. And Q3 is about members' energy after the jumping while Q5 is more related to the interest. If one has higher scores in Q5, he/she might get lower scores for PC1
+#We think that PC1 stands for physical fitness and member's interest in jumping because PC1 has a strong negative loading for Q5 and  positive loading for Q3. These questions are more about the opinions and physical state of the group members. And Q3 is about members' energy after the jumping while Q5 is more related to the interest. If one has higher scores in Q5, he/she might get lower scores for PC1
 
 #PLOT
 jumpPC <- as.data.frame(pca$x)
@@ -116,23 +115,19 @@ ggplot(jumpPC, aes(PC1, jump, label=id)) + geom_point() + xlab("PC1") + ylab("#J
 ```{r}
 #If you could only choose one thing to predict the score for each member of your group (raw data variable, a cluster or a PC) what would it be and why?
 
-#We think PC might be more helpful in predicting the score for each member. PCA can help us to get rid of irrelevant variables, so the visualization from PC is more accurate. Pc1 and PC2 provides over 30% contribution so we visualize the data of PC1 and PC 2 to see the results. According to the visualization we present below, If the loading of PC1 is higher, the member will jump higher. 
+#We think PC might be more helpful in predicting the score for each member. PCA can help us to get rid of irrelevant variables, so the visualization from PC is more accurate. PC1 and PC2 provides over 30% contribution so we visualize the data of PC1 and PC2 to see the results. According to the visualization we present below, if the loading of PC1 is higher, the member will jump higher. 
 
-# Graph #jumps/PC1 by cluster
+# Graph Jump Height/PC1 by cluster
 
 jumpPC$cluster <- as.factor(DF3$cluster)
-
 jumpPC$HIGH <- DF2$X_value
-ggplot(jumpPC, aes(PC2, HIGH, color=cluster, label=id)) + geom_point() + xlab("PC2") + ylab("#Jumps in 30''") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) + ggtitle("#Jumps by PC2 by cluster")
 
-jumpPC$HIGH <- DF2$X_value
-ggplot(jumpPC, aes(PC1, HIGH, color=cluster, label=id)) + geom_point() + xlab("PC1") + ylab("#Jumps in 30''") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) + ggtitle("#Jumps by PC1 by cluster")
+ggplot(jumpPC, aes(PC2, HIGH, color=cluster, label=id)) + geom_point() + xlab("PC2") + ylab("Jump Height (X_Value)") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) + ggtitle("Jump Height by PC2 by cluster")
 
-#ggplot(jumpPC, aes(PC2, jump, color=cluster, label=id)) + geom_point() + xlab("PC2") + ylab("#Jumps in 30''") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) + ggtitle("#Jumps by PC2 by cluster")
+ggplot(jumpPC, aes(PC1, HIGH, color=cluster, label=id)) + geom_point() + xlab("PC1") + ylab("Jump Height (X_Value)") + geom_smooth(method='lm',formula=y~x) + geom_text(aes(label=id),hjust=1, vjust=1.5, size=3) + ggtitle("Jump Height by PC1 by cluster")
 
 
 # Devise intervention:
-
 #According to the analysis, we think we can devise an intervention which is providing more opportunities for novice to improve their physical fitness, increase the frequency of exercising and thus to intrigue their interests in jumping.
 
 

@@ -21,11 +21,11 @@
 * Q4	Do you have any health condition that makes jumping difficult?
 * Q5	I consider exercising a joyful activity
 
-### Rating Rubric 
+## Rating Rubric 
 * strongly agree/everyday:5
-* agree/regularly (not everyday): 4
-* neutral/often: 3
-* disagree/ sometimes:2
+* 4
+* 3
+* 2
 * strongly disagree/ rarely:1
 
 
